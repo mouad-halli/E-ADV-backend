@@ -13,19 +13,19 @@ E-ADV Server is built using ASP.NET Core and follows a layered architecture. The
 
 ```bash
 ├── Controllers/
-├── Repositories/
 ├── Services/
-├── Data/
-├── Interfaces/ │
-                ├── Repositories/
-                └── Services/
-├── Migrations/
+├── Repositories/
 ├── Models/ │
             ├── DTOS/ │
             └── Entities/
 ├── common/ │
             ├── Exceptions/
             └── Middlewares/
+├── Interfaces/ │
+                ├── Repositories/
+                └── Services/
+├── Data/
+├── Migrations/
 ├── Program.cs
 ├── Server.csproj
 ├── Server.sln
