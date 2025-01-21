@@ -1,0 +1,18 @@
+{
+    "Logging": {
+        "LogLevel": {
+            "Default": "Information",
+            "Microsoft.AspNetCore": "Warning"
+        }
+    },
+    "ConnectionStrings": {
+        "DefaultConnection": "Your-Database-Connection-String"
+    },
+    "MobileApp": {
+        "Url": "Your mobile app url"
+    },
+    "Jwt": {
+        "Key": "Your-JWT-Secret-Key",
+        "Issuer": "Your-JWT-Issuer"
+    }
+  }
