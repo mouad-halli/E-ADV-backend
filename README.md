@@ -1,4 +1,4 @@
-# E-ADV Backend Documentation
+# E-ADV Backend
 
 Welcome to E-ADV Server. This project is a backend service for managing appointments, product presentations, product slides, and user authentication.
 
