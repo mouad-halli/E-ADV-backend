@@ -1,6 +1,10 @@
-# E-ADV Backend Documentation
+# E-ADV Mobile App
 
-E-ADV is an innovative mobile application designed for pharmaceutical representatives and medical sales teams. The server-side of E-ADV provides a robust and scalable backend infrastructure to support the application's core functionalities, ensuring seamless data management, secure authentication, and efficient processing of user interactions.
+E-ADV is an innovative mobile application designed to revolutionize the work of pharmaceutical representatives and medical sales teams. It offers a comprehensive solution for creating, presenting, and evaluating pharmaceutical product presentations in an interactive and efficient manner using advanced features.
+
+## Overview
+
+The E-ADV Server provides a robust and scalable backend infrastructure to support the application's core functionalities, ensuring seamless data management, secure authentication, and efficient processing of user interactions.
 
 ## Table of Contents
 
