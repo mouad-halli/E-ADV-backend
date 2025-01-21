@@ -1,6 +1,6 @@
 # E-ADV Backend Documentation
 
-Welcome to E-ADV Server. This project is a backend service for managing appointments, product presentations, product slides, and user authentication.
+E-ADV is an innovative mobile application designed for pharmaceutical representatives and medical sales teams. The server-side of E-ADV provides a robust and scalable backend infrastructure to support the application's core functionalities, ensuring seamless data management, secure authentication, and efficient processing of user interactions.
 
 ## Table of Contents
 
@@ -12,3 +12,29 @@ Welcome to E-ADV Server. This project is a backend service for managing appointm
 - [Models](documentation/Models.md)
 - [Middlewares](documentation/Middlewares.md)
 - [Exceptions](documentation/Exceptions.md)
+
+# Key Features of E-ADV Server
+
+## Presentation Management
+- Enables product managers to create, update, and manage interactive pharmaceutical presentations.
+- Supports slides with text, images, and videos via an intuitive interface.
+
+## Session Control
+- Allows representatives to pause and resume presentations at any time.
+- Ensures flexibility during interactions with healthcare professionals.
+
+## Reaction Tracking
+- Collects and stores doctors' feedback for each slide.
+- Tracks agreement levels (agree, disagree, neutral) and additional comments.
+
+## Engagement Analytics
+- Monitors and records the time spent on each slide.
+- Provides insights into healthcare professionals' engagement levels.
+
+## Custom Reporting
+- Generates detailed reports summarizing presentation performance.
+- Includes doctor reactions, additional comments, and suggested improvements.
+
+## Secure API
+- Implements robust authentication and authorization mechanisms.
+- Ensures data privacy and integrity throughout the system.
