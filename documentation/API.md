@@ -15,12 +15,6 @@
 - `GET /api/appointment/{id}`
 - `POST /api/appointment`
 
-## ProductSlideController
-
-- `GET /api/productslide`
-- `GET /api/productslide/{id}`
-- `PUT /api/productslide/{slideId}`
-
 ## ProductPresentationController
 
 - `GET /api/productpresentation`
@@ -28,6 +22,12 @@
 - `GET /api/productpresentation/{id}`
 - `POST /api/productpresentation`
 - `PUT /api/productpresentation/{id}`
+
+## ProductSlideController
+
+- `GET /api/productslide`
+- `GET /api/productslide/{id}`
+- `PUT /api/productslide/{slideId}`
 
 ## UserController
 
