@@ -30,7 +30,7 @@ E-ADV Server is built using ASP.NET Core and follows a layered architecture. The
 ├── Server.csproj
 ├── Server.sln
 ```
-## Detailed Project Structure
+## Extended Project Structure
 ```bash
 └── e-adv-backend/
     ├── README.md
