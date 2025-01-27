@@ -4,9 +4,9 @@ E-ADV is an innovative mobile application designed to revolutionize the work of 
 
 ## Learn More  
 
-For a detailed overview and insights into the E-ADV mobile app, check out my Medium article:  
+For a detailed overview and insights into the E-ADV Backend, check out my Medium article:  
 
-[Read the full article on Medium](https://medium.com/@mouadhalli1337/e-adv-revolutionizing-pharmaceutical-sales-with-an-interactive-mobile-app-556ef724ae19)
+[Read the full article on Medium](https://medium.com/@mouadhalli1337/building-the-e-adv-backend-a-scalable-solution-with-net-core-8-fa16da849bd5)
 
 ## Overview
 
