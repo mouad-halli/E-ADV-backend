@@ -17,7 +17,7 @@ namespace Server.Services
         // generate and return jwt token as a string
         public string CreateToken(List<Claim> claims)
         {
-            string key = _configuration["Jwt:key"];
+            string key = _configuration["Jwt:key"] ?? throw new InvalidOperationException("jwt key not found");;
 
             SymmetricSecurityKey SymmetricKey = new(Encoding.UTF8.GetBytes(key));
             SigningCredentials KeyCredentials = new(SymmetricKey, SecurityAlgorithms.HmacSha256);

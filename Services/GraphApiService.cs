@@ -34,7 +34,7 @@ namespace Server.Services
                     _logger.LogWarning("Fetching user data from Microsoft Graph API Failed: {StatusCode}", response.StatusCode);
                     return null;
                 }
-                
+
                 // Serialize Graph Api Response content to a string then parse it to a JObject
                 var jsonResponse = await response.Content.ReadAsStringAsync();
                 return JObject.Parse(jsonResponse);

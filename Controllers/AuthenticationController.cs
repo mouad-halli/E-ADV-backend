@@ -57,7 +57,7 @@ namespace Server.Controllers
 
                 Response.Cookies.Append("access_token", jwtToken, new CookieOptions
                 {
-                    Expires = DateTime.UtcNow.AddHours(1)
+                    Expires = DateTime.UtcNow.AddHours(8)
                 });
 
                 return Ok(new

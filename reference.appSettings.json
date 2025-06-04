@@ -9,7 +9,7 @@
         "DefaultConnection": "Your-Database-Connection-String"
     },
     "MobileApp": {
-        "Url": "Your mobile app url"
+        "Url": "http://10.0.2.16"
     },
     "Jwt": {
         "Key": "Your-JWT-Secret-Key",
