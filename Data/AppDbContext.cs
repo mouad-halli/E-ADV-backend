@@ -8,7 +8,7 @@ namespace Server.Data
 {
     public class AppDbContext : IdentityDbContext<User, IdentityRole<string>, string>
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {  }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Location> Locations { get; set; }
@@ -40,6 +40,18 @@ namespace Server.Data
             builder.Entity<ProductSlide>()
                 .Property(s => s.Feedback)
                 .HasConversion<int>(); // store enum as integer
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            foreach (var entry in ChangeTracker.Entries<ProductSlide>())
+            {
+                if (entry.State == EntityState.Modified)
+                {
+                    entry.Entity.UpdatedAt = DateTime.UtcNow;
+                }
+            }
+            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }

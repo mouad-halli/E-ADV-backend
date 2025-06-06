@@ -65,7 +65,7 @@ namespace Server.Services
                 LocationId = appointmentLocation.Id,
                 Location = appointmentLocation,
                 User = user,
-                UserId = user.Id
+                UserId = user.Id,
             };
 
             return await _appointmentRepository.AddAppointmentAsync(appointment);

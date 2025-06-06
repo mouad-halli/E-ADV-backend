@@ -12,5 +12,6 @@ namespace Server.Interfaces.Services
         Task<ProductPresentation> GetProductPresentationByIdAsync(string id);
         Task<ProductPresentation> CreateProductPresentationtAsync(ProductPresentationDTO data, string visiteId);
         Task UpdateProductPresentationtAsync(string id, UpdateProductPresentationDTO productPresentation);
+        string FindProductPresentationStatus(ProductPresentation productPresentation);
     }
 }

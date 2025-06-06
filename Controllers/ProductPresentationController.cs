@@ -47,16 +47,40 @@ namespace Server.Controllers
             if (productPresentation == null)
                 return Ok(response);
 
-            if (productPresentation.ProductSlides != null && productPresentation.ProductSlides.Count != 0) {
+            // if (productPresentation.ProductSlides != null && productPresentation.ProductSlides.Count != 0) {
+            //     if (productPresentation.ProductSlides.All(slide => slide.TimeSpent > 3 || slide.Feedback != FeedbackType.None || !string.IsNullOrEmpty(slide.Comment)))
+            //         response.presentationStatus = "presented";
+            //     else if (productPresentation.ProductSlides.Any(slide => slide.TimeSpent > 3 || slide.Feedback != FeedbackType.None || !string.IsNullOrEmpty(slide.Comment)))
+            //         response.presentationStatus = "continue";
+            // }
+
+            // CreatedAt == DateTime.Today
+            //presented   continue   continue  not-p
+            //[3][3][3] | [3][3][] | [3][][] | [][][]
+            //presented      presented 
+            //[-1][-1][3] | [-1][3][3]
+            //presented      continue      continue    continue      not-p
+            //[3][3][3][3] | [3][3][3][] | [3][3][][] | [3][][][] | [][][][]
+
+            // CreatedAt != DateTime.Today -> added cases: -
+            //Replay        continue        continue      not-presented
+            //[3][3][3]  |  [3][3][]     |  [3][][]     | [][][]
+            //Replay          replay         replay
+            //[3][3][3]  |  [-1][-1][3]  |  [-1][3][]  | -> get to one of the above
+            //[3][3][3]  |  [][][]  |  [-1][-1][3]  | -> get to one of the above
+
+            if (productPresentation.ProductSlides != null && productPresentation.ProductSlides.Count != 0)
+            {
                 if (productPresentation.ProductSlides.All(slide => slide.TimeSpent > 3 || slide.Feedback != FeedbackType.None || !string.IsNullOrEmpty(slide.Comment)))
-                    response.presentationStatus = "presented";
+                    response.presentationStatus = productPresentation.CreatedAt.ToUniversalTime().Date == DateTime.Today ? "presented" : "replay";
                 else if (productPresentation.ProductSlides.Any(slide => slide.TimeSpent > 3 || slide.Feedback != FeedbackType.None || !string.IsNullOrEmpty(slide.Comment)))
                     response.presentationStatus = "continue";
             }
 
-            if (response.presentationStatus != "not-presented" && productPresentation.ProductSlides != null) {
+            if (response.presentationStatus != "not-presented" && productPresentation.ProductSlides != null)
+            {
                 response.latestPresentationDate = productPresentation.CreatedAt.ToShortDateString();
-                
+
                 var feedbacks = productPresentation.ProductSlides
                                     .Where(s => s.Feedback != FeedbackType.None)
                                     .Select(s => s.Feedback == FeedbackType.Neutral ? 2.5 : (double)s.Feedback);
@@ -93,7 +117,7 @@ namespace Server.Controllers
                 return BadRequest(ModelState);
             }
             var productPresentation = await _productPresentationService.CreateProductPresentationtAsync(data, visiteId);
-            
+
             return Ok(productPresentation);
         }
 

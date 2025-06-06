@@ -22,8 +22,8 @@ namespace Server.Models.Entities
         public string Comment { get; set; } = string.Empty;
         public FeedbackType Feedback { get; set; } = FeedbackType.None;
         public double TimeSpent { get; set; } = 0;
-        public DateTime StartDate { get; set; } = DateTime.UtcNow;
+        // public DateTime StartDate { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; }
         public required int OrderNumber { get; set; }
-
     }
 }

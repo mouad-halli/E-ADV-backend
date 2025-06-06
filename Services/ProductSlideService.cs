@@ -34,11 +34,11 @@ namespace Server.Services
         {
             if (string.IsNullOrEmpty(slideId))
                 throw new BadRequestException("slide id is required");
-            _logger.LogInformation("good 2");
+            // _logger.LogInformation("good 2");
             var existingSlide = await _productSlideRepository.GetProductSlideByIdAsync(slideId);
             if (existingSlide == null)
                 throw new NotFoundException("slide not found");
-            _logger.LogInformation("good {comment}", productSlideData.Comment);
+            // _logger.LogInformation("good {comment}", productSlideData.Comment);
             existingSlide.Comment = productSlideData.Comment;
             existingSlide.TimeSpent = productSlideData.TimeSpent;
             existingSlide.Feedback = productSlideData.Feedback;
