@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Server.Interfaces.Services;
@@ -28,9 +29,9 @@ namespace Server.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var productPresentation = await _productPresentationService.GetProductPresentationAsync(filter);
+            var (productPresentation, slideIdToContinueFrom) = await _productPresentationService.GetProductPresentationAsync(filter);
 
-            return Ok(productPresentation);
+            return Ok(new { productPresentation, slideIdToContinueFrom });
         }
 
         [HttpGet("summary")]
@@ -71,9 +72,11 @@ namespace Server.Controllers
 
             if (productPresentation.ProductSlides != null && productPresentation.ProductSlides.Count != 0)
             {
-                if (productPresentation.ProductSlides.All(slide => slide.TimeSpent > 3 || slide.Feedback != FeedbackType.None || !string.IsNullOrEmpty(slide.Comment)))
+                // _logger.LogInformation("here -> {productSlides}", JsonSerializer.Serialize(productPresentation.ProductSlides));
+                // _logger.LogInformation("createdAt -> {createdAt}", productPresentation.CreatedAt);
+                if (productPresentation.ProductSlides.All(slide => slide.TimeSpent >= 3 || slide.TimeSpent == -1/* || slide.Feedback != FeedbackType.None || !string.IsNullOrEmpty(slide.Comment)*/))
                     response.presentationStatus = productPresentation.CreatedAt.ToUniversalTime().Date == DateTime.Today ? "presented" : "replay";
-                else if (productPresentation.ProductSlides.Any(slide => slide.TimeSpent > 3 || slide.Feedback != FeedbackType.None || !string.IsNullOrEmpty(slide.Comment)))
+                else if (productPresentation.ProductSlides.Any(slide => slide.TimeSpent >= 3 || slide.TimeSpent == -1/* || slide.Feedback != FeedbackType.None || !string.IsNullOrEmpty(slide.Comment)*/))
                     response.presentationStatus = "continue";
             }
 
@@ -116,9 +119,9 @@ namespace Server.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var productPresentation = await _productPresentationService.CreateProductPresentationtAsync(data, visiteId);
+            var (productPresentation, slideIdToContinueFrom) = await _productPresentationService.CreateProductPresentationtAsync(data, visiteId);
 
-            return Ok(productPresentation);
+            return Ok(new {productPresentation, slideIdToContinueFrom});
         }
 
         [HttpPut("{id}")]

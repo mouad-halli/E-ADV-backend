@@ -16,5 +16,6 @@ namespace Server.Models.DTOS
         public string Comment { get; set; }
         public FeedbackType Feedback { get; set; }
         public double TimeSpent { get; set; }
+        public string UpdatedAt { get; set; }
     }
 }

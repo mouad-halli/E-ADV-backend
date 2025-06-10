@@ -196,3 +196,28 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+/* TESTS
+
+    order of creation between appointment, productPresentation, productSlides:
+    - appointment created on appointment click -> independent
+    - productPresentation created on productClick -> dependent on appointment
+    - productSlides are created when their productPresentation is created -> dependent on productPresentation
+
+    expected results by case (user, doctor, product):
+    - user never did visited a doctro -> never did a presentation:
+        - appointments all appointments should appear not-visited
+        - presentation products should appear as not-presented
+    - user did a visit today with doctor = 1, presented 3 slides of product = 1 that has 5 slides:
+        - appointment with doctor = 1 as the date of today should appear Visited
+        - presentation product = 1 should appear presented
+    - user have a visit today with doctor = 1: // DO A DATA REPRESENTATION OF THIS
+        - appointment with doctor = 1 should appear not-visited, but previous one shoud appear visited
+        - presentation proudct = 1 should appear as continue
+    - user continued the presentation of 5 slides of product = 1 with doctor = 1 // DO A DATA REPRESENTATION OF THIS
+        - appointment should appear visited
+        - presentation product = 1 should appear as presented
+    - a day passed and user have a visit with doctor = 1:
+        - appointment should appear as not-visited
+        - product presentation of product = 1 should appear as replay // DO A DATA REPRESENTATION OF THIS
+*/

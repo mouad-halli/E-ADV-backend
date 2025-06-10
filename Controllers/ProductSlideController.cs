@@ -48,7 +48,7 @@ namespace Server.Controllers
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            _logger.LogInformation("good");
+            // _logger.LogInformation("good");
             var updatedSlide = await _productSlideService.UpdateProductSlideAsync(slideId, productSlideData);
             return Ok(updatedSlide);
         }

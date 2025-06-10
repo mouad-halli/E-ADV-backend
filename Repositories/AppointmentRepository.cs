@@ -18,7 +18,7 @@ namespace Server.Repositories
             return await _context.Set<Appointment>()
                     .Where(a => a.VisiteId == visiteId)
                     .Select(a => a.ProductPresentations
-                        .Any(pp => pp.ProductSlides.Any(ps => ps.TimeSpent > 3)))
+                        .Any(pp => pp.ProductSlides.Any(ps => ps.TimeSpent > 3 || ps.TimeSpent == -1)))
                     .FirstOrDefaultAsync();
         }
 

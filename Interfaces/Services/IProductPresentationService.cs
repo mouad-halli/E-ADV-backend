@@ -8,9 +8,9 @@ namespace Server.Interfaces.Services
 
         Task<ProductPresentation> FindUserProductPresentation(FindProductPresentationDTO data);
         Task<IEnumerable<ProductPresentation>> GetAllProductPresentationsAsync();
-        Task<ProductPresentation> GetProductPresentationAsync(GetProductPresentationQueryParams filter);
+        Task<(ProductPresentation, string)> GetProductPresentationAsync(GetProductPresentationQueryParams filter);
         Task<ProductPresentation> GetProductPresentationByIdAsync(string id);
-        Task<ProductPresentation> CreateProductPresentationtAsync(ProductPresentationDTO data, string visiteId);
+        Task<(ProductPresentation, string)> CreateProductPresentationtAsync(ProductPresentationDTO data, string visiteId);
         Task UpdateProductPresentationtAsync(string id, UpdateProductPresentationDTO productPresentation);
         string FindProductPresentationStatus(ProductPresentation productPresentation);
     }

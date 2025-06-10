@@ -42,16 +42,16 @@ namespace Server.Data
                 .HasConversion<int>(); // store enum as integer
         }
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
-            foreach (var entry in ChangeTracker.Entries<ProductSlide>())
-            {
-                if (entry.State == EntityState.Modified)
-                {
-                    entry.Entity.UpdatedAt = DateTime.UtcNow;
-                }
-            }
-            return base.SaveChangesAsync(cancellationToken);
-        }
+        // public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        // {
+        //     foreach (var entry in ChangeTracker.Entries<ProductSlide>())
+        //     {
+        //         if (entry.State == EntityState.Modified)
+        //         {
+        //             entry.Entity.UpdatedAt = DateTime.UtcNow;
+        //         }
+        //     }
+        //     return base.SaveChangesAsync(cancellationToken);
+        // }
     }
 }

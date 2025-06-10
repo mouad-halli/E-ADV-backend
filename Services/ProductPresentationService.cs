@@ -28,12 +28,21 @@ namespace Server.Services
             _logger = logger;
         }
 
-        public async Task<ProductPresentation> GetProductPresentationAsync(GetProductPresentationQueryParams filter)
+        public async Task<(ProductPresentation?, string?)> GetProductPresentationAsync(GetProductPresentationQueryParams filter)
         {
             if (string.IsNullOrEmpty(filter.ProductId))
                 throw new BadRequestException("productId is required");
 
-            return await _productPresentationRepository.GetProductPresentationAsync(filter);
+            ProductPresentation productPresentation = await _productPresentationRepository.GetProductPresentationAsync(filter);
+
+            string lastPresentationStatus = productPresentation == null ? "not-presented" : FindProductPresentationStatus(productPresentation);
+
+            string slideIdToContinueFrom = "";
+
+            if (lastPresentationStatus == "continue" && productPresentation != null && productPresentation.ProductSlides != null)
+                slideIdToContinueFrom = productPresentation.ProductSlides.OrderByDescending(s => s.UpdatedAt).First().SlideId;
+
+            return (productPresentation, slideIdToContinueFrom);
         }
 
         public async Task<ProductPresentation> FindUserProductPresentation(FindProductPresentationDTO data)
@@ -71,7 +80,7 @@ namespace Server.Services
             return presentationStatus;
         }
 
-        public async Task<ProductPresentation> CreateProductPresentationtAsync(ProductPresentationDTO data, string visiteId)
+        public async Task<(ProductPresentation, string)> CreateProductPresentationtAsync(ProductPresentationDTO data, string visiteId)
         {
             var appointment = await _appointmentService.GetAppointmentByVisiteIdAsync(visiteId);
 
@@ -88,12 +97,17 @@ namespace Server.Services
                 DoctorId = appointment.ContactId
             });
 
-            _logger.LogInformation("lastProductPresentation: {collection}", JsonSerializer.Serialize(lastProductPresentation));
+            // _logger.LogInformation("lastProductPresentation: {collection}", JsonSerializer.Serialize(lastProductPresentation));
 
             string lastPresentationStatus = lastProductPresentation == null ? "not-presented" : FindProductPresentationStatus(lastProductPresentation);
 
-            _logger.LogInformation("lastPresentationStatus {status}", lastPresentationStatus);
-            
+            string slideIdToContinueFrom = "";
+
+            if (lastPresentationStatus == "continue" && lastProductPresentation != null && lastProductPresentation.ProductSlides != null)
+                slideIdToContinueFrom = lastProductPresentation.ProductSlides.OrderByDescending(s => s.UpdatedAt).First().SlideId;
+
+            // _logger.LogInformation("lastPresentationStatus {status}", lastPresentationStatus);
+
             var productPresentation = new ProductPresentation
             {
                 AppointmentId = appointment.Id,
@@ -116,11 +130,11 @@ namespace Server.Services
                     Comment = slide.Comment,
                     Feedback = slide.Feedback,
                     TimeSpent = timeSpent >= 3 ? -1 : slide.TimeSpent,
-                    OrderNumber = slide.OrderNumber    
+                    OrderNumber = slide.OrderNumber
                 };
                 return productSlide;
             }).ToList();
-            
+
             // productPresentation.ProductSlides = data.ProductSlides.Select(slide => new ProductSlide
             // {
             //     ProductPresentationId = productPresentation.Id,
@@ -131,7 +145,8 @@ namespace Server.Services
             //     OrderNumber = slide.OrderNumber
             // }).ToList();
 
-            return await _productPresentationRepository.AddProductPresentationAsync(productPresentation);
+            ProductPresentation createdProductPresentation = await _productPresentationRepository.AddProductPresentationAsync(productPresentation);
+            return (createdProductPresentation, slideIdToContinueFrom);
         }
 
         public async Task UpdateProductPresentationtAsync(string id, UpdateProductPresentationDTO productPresentation)

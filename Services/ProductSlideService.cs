@@ -42,6 +42,7 @@ namespace Server.Services
             existingSlide.Comment = productSlideData.Comment;
             existingSlide.TimeSpent = productSlideData.TimeSpent;
             existingSlide.Feedback = productSlideData.Feedback;
+            existingSlide.UpdatedAt = DateTime.Parse(productSlideData.UpdatedAt);
 
             return await _productSlideRepository.UpdateProductSlideAsync(slideId, existingSlide);
         }
