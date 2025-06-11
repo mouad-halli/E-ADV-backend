@@ -37,7 +37,7 @@ namespace Server.Services
 
             string lastPresentationStatus = productPresentation == null ? "not-presented" : FindProductPresentationStatus(productPresentation);
 
-            string slideIdToContinueFrom = "";
+            string? slideIdToContinueFrom = null;
 
             if (lastPresentationStatus == "continue" && productPresentation != null && productPresentation.ProductSlides != null)
                 slideIdToContinueFrom = productPresentation.ProductSlides.OrderByDescending(s => s.UpdatedAt).First().SlideId;
@@ -80,7 +80,7 @@ namespace Server.Services
             return presentationStatus;
         }
 
-        public async Task<(ProductPresentation, string)> CreateProductPresentationtAsync(ProductPresentationDTO data, string visiteId)
+        public async Task<(ProductPresentation?, string?)> CreateProductPresentationtAsync(ProductPresentationDTO data, string visiteId)
         {
             var appointment = await _appointmentService.GetAppointmentByVisiteIdAsync(visiteId);
 
@@ -101,7 +101,7 @@ namespace Server.Services
 
             string lastPresentationStatus = lastProductPresentation == null ? "not-presented" : FindProductPresentationStatus(lastProductPresentation);
 
-            string slideIdToContinueFrom = "";
+            string? slideIdToContinueFrom = null;
 
             if (lastPresentationStatus == "continue" && lastProductPresentation != null && lastProductPresentation.ProductSlides != null)
                 slideIdToContinueFrom = lastProductPresentation.ProductSlides.OrderByDescending(s => s.UpdatedAt).First().SlideId;
