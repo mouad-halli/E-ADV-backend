@@ -53,7 +53,9 @@ namespace Server.Controllers
                 if (graphUser == null)
                     return Unauthorized();
 
-                var ( jwtToken, user ) = await _userService.MsalLoginAsync(graphUser);
+                var (jwtToken, user) = await _userService.MsalLoginAsync(graphUser);
+                // var (jwtToken, user) = await _userService.temporaryLocalUserCreation(graphUser);
+
 
                 Response.Cookies.Append("access_token", jwtToken, new CookieOptions
                 {
@@ -105,12 +107,12 @@ namespace Server.Controllers
 
             Response.Cookies.Append("access_token", jwtToken, new CookieOptions
             {
-                Expires = DateTime.UtcNow.AddDays(30)
+                Expires = DateTime.UtcNow.AddDays(8)
             });
             
             return Ok(new
             {
-                user.Id,
+                // user.Id,
                 user.FirstName,
                 user.LastName,
                 user.Email

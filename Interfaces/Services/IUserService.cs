@@ -12,6 +12,7 @@ namespace Server.Interfaces.Services
         Task<(string jwtToken, User user)> LoginAsync(string email, string password);
 
         Task<(string jwtToken, User user)> MsalLoginAsync(JObject graphUser);
+        Task<(string, User)> temporaryLocalUserCreation(JObject graphUser);
         Task<User> findUserById(string userId);
     }
 }

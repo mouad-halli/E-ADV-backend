@@ -24,6 +24,11 @@ namespace Server.Repositories
             return await _dbContext.Users.SingleOrDefaultAsync(u => u.Email == email);
         }
 
+        public async Task<User> GetByEmailOrUsernameAsync(string email, string username)
+        {
+            return await _dbContext.Users.SingleOrDefaultAsync(u => u.Email == email || u.UserName == username);
+        }
+
         public async Task<User> GetByIdAsync(string id)
         {
             return await _dbContext.Users.FindAsync(id);

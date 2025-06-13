@@ -130,7 +130,8 @@ namespace Server.Services
                 // RecruitmentDate = ParseRecruitmentDate(graphUser.Value<string>("employeeHireDate")) ?? DateTime.MinValue
             };
 
-            var createResult = await _userManager.CreateAsync(newUser);
+            // var createResult = await _userManager.CreateAsync(newUser);
+            IdentityResult createResult = await _userManager.CreateAsync(newUser, "Admin@123");
             if (!createResult.Succeeded)
             {
                 _logger.LogError("User creation failed: {Errors}", string.Join(", ", createResult.Errors.Select(e => e.Description)));
@@ -173,9 +174,45 @@ namespace Server.Services
             return (jwtToken, user);
         }
 
+        public async Task<(string, User)> temporaryLocalUserCreation(JObject graphUser)
+        {
+            var employeeId = graphUser.Value<string>("employeeId");
+
+            var newUser = new User
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = graphUser.Value<string>("mail") ?? graphUser.Value<string>("userPrincipalName"),
+                FirstName = graphUser.Value<string>("givenName") ?? string.Empty,
+                LastName = graphUser.Value<string>("surname") ?? string.Empty,
+                Email = graphUser.Value<string>("mail") ?? graphUser.Value<string>("userPrincipalName"),
+                // UserStatusId = userStatusEntity.Id,
+                // Title = graphUser.Value<string>("jobTitle"),
+                // DepartmentId = departmentEntity.Id,
+                EmployeeNumber = int.TryParse(employeeId, out var empNumber) ? empNumber : throw new ArgumentException("Invalid employee number"),
+                // RecruitmentDate = ParseRecruitmentDate(graphUser.Value<string>("employeeHireDate")) ?? DateTime.MinValue
+            };
+
+            IdentityResult result = await _userManager.CreateAsync(newUser, "Admin@123");
+
+            if (!result.Succeeded)
+                throw new BadRequestException(result.ToString());
+
+            var user = await _userRepository.GetByEmailAsync(newUser.Email);
+
+            var claims = new List<Claim>
+            {
+                new (ClaimTypes.NameIdentifier, user.Id),
+                new (ClaimTypes.Email, user.Email ?? string.Empty)
+            };
+
+            string jwtToken = _tokenService.CreateToken(claims);
+
+            return (jwtToken, user);
+        }
+
         public async Task<(string jwtToken, User user)> LoginAsync(string email, string password)
         {
-            var user = await _userRepository.GetByEmailAsync(email);
+            var user = await _userRepository.GetByEmailOrUsernameAsync(email, email);
 
             if (user == null || !await _userManager.CheckPasswordAsync(user, password))
                 throw new BadRequestException("invalid email or password");
